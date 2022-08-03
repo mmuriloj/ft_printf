@@ -6,7 +6,7 @@
 /*   By: mumontei <mumontei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 17:44:13 by mumontei          #+#    #+#             */
-/*   Updated: 2022/07/26 16:10:03 by mumontei         ###   ########.fr       */
+/*   Updated: 2022/08/03 14:58:12 by mumontei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_printf(const char *str, ...)
 		if (*str == '%')
 		{
 			str++;
-			count += checkflag(str, args);
+			count += check_identifier(str, args);
 			str++;
 		}
 		else
@@ -40,7 +40,7 @@ int	ft_printf(const char *str, ...)
 	return (count);
 }
 
-int	checkflag(const char *str, va_list args)
+int	check_identifier(const char *str, va_list args)
 {
 	if (*str == '%')
 		write(1, "%", 1);
@@ -51,37 +51,16 @@ int	checkflag(const char *str, va_list args)
 	else if (*str == 'd' || *str == 'i')
 		return (ft_print_int(va_arg(args, int)));
 	else if (*str == 'u')
-		return (print_u(va_arg(args, unsigned int)));
+		return (ft_print_u(va_arg(args, unsigned int)));
 	else if (*str == 'p')
-		return (print_ptr(va_arg(args, void *)));
+		return (ft_print_ptr(va_arg(args, void *)));
 	else if (*str == 'x')
 		return (ft_print_hex(va_arg(args, unsigned long int),
-				"0123456789abcdef"));
+				LOWER_HEX_BASE));
 	else if (*str == 'X')
 		return (ft_print_hex(va_arg(args, unsigned long int),
-				"0123456789ABCDEF"));
+				UPPER_HEX_BASE));
 	else
 		write(1, &str, 1);
 	return (1);
-}
-
-int	ft_putchar_fd(char c, int fd)
-{
-	write(fd, &c, 1);
-	return (1);
-}
-
-int	ft_putstr_fd(char *s, int fd)
-{
-	int	len;
-
-	len = 0;
-	if (!s)
-	{
-		write(fd, "(null)", 6);
-		return (6);
-	}
-	len = ft_strlen(s);
-	write(1, s, len);
-	return (len);
 }
